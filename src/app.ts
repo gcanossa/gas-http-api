@@ -122,6 +122,47 @@ const createRequestHandelr = ({middlewares, routes}: BuilderParams): Application
   }
 }
 
+export type ViewParams = { [key:string]: any }
+export interface HttpResponseHelper {
+  ok():void;
+  view(path:string, params:ViewParams):void;
+  json(content:any):void;
+  text(content:string):void;
+  download(content:string, filename: string):void;
+  error(error:string):void;
+}
+
+export const respond = (response: HttpResponse): HttpResponseHelper => {
+  return {
+    ok: () => {
+      response.result = HtmlService.createHtmlOutput();
+    },
+    view: (path:string, params:ViewParams) => {
+      const t = HtmlService.createTemplateFromFile(path);
+      t.params = params;
+      response.result = t.evaluate();
+    },
+    json: (content:any) => {
+      response.result = ContentService.createTextOutput()
+        .setMimeType(GoogleAppsScript.Content.MimeType.JSON)
+        .setContent(JSON.stringify(content));
+    },
+    text: (content:string) => {
+      response.result = ContentService.createTextOutput()
+        .setMimeType(GoogleAppsScript.Content.MimeType.TEXT)
+        .setContent(JSON.stringify(content));
+    },
+    download: (content:string, filename: string) => {
+      response.result = ContentService.createTextOutput()
+        .setContent(content)
+        .downloadAsFile(filename);
+    },
+    error: (error:string) => {
+      response.error = error;
+    }
+  }
+}
+
 export const appBuilder = (builder:ApplicationBuilderFn): Application => {
   const middlewares: MiddlewareFn[] = [];
   const routes:RouteEntries = {};

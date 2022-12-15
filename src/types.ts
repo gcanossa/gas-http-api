@@ -6,6 +6,7 @@ export interface HttpResponse {
   result: HttpOutput | null;
   error?: string | null;
 }
+
 export type MiddlewareFn = (request:HttpRequest, response: HttpResponse) => void;
 export type RouteHandler = MiddlewareFn | MiddlewareFn[];
 
