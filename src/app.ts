@@ -12,6 +12,11 @@ interface BuilderParams {
   routes: RouteEntries
 }
 
+const httpMethodPrefixes = {
+  get: 'get://',
+  post: 'post://'
+}
+
 const pathMatch = (paths: string[], requestPath: string, prefix: string): PathMatchResult | null => {
 
   for(let path of paths){
@@ -54,18 +59,18 @@ const createBuilder = ({middlewares, routes}: BuilderParams): ApplicationBuilder
     },
     get: (match: string, fn: MiddlewareFn | MiddlewareFn[]) => {
       match = match.replace(/^\//, '');
-      routes[`get://${match}`] = fn;
+      routes[`${httpMethodPrefixes.get}${match}`] = fn;
       return app;
     },
     post:(match: string, fn: MiddlewareFn | MiddlewareFn[]) => {
       match = match.replace(/^\//, '');
-      routes[`post://${match}`] = fn;
+      routes[`${httpMethodPrefixes.post}${match}`] = fn;
       return app;
     },
     all:(match: string, fn: MiddlewareFn | MiddlewareFn[]) => {
       match = match.replace(/^\//, '');
-      routes[`get://${match}`] = fn;
-      routes[`post://${match}`] = fn;
+      routes[`${httpMethodPrefixes.get}${match}`] = fn;
+      routes[`${httpMethodPrefixes.post}${match}`] = fn;
       return app;
     }
   };
@@ -88,7 +93,7 @@ const createRequestHandelr = ({middlewares, routes}: BuilderParams): Application
       fn(request, response);
     }
 
-    const methodPrefix = (request as any).postData !== undefined ? 'post://' : 'get://'
+    const methodPrefix = request.contentLength >= 0 ? httpMethodPrefixes.post : httpMethodPrefixes.get
     const match = pathMatch(Object.keys(routes), request.pathInfo, methodPrefix);
     
     if(!match)
