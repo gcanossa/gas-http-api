@@ -101,18 +101,14 @@ const createRequestHandelr = ({middlewares, routes}: BuilderParams): Application
 
     request.pathParams = match.params;
 
-    const fn = routes[match.path];
+    const routeHandlers = routes[match.path];
 
-    if(fn instanceof Array){
-      for(let f of fn){
-        if(response.error)
-          break;
+    const fn = routeHandlers instanceof Array ? routeHandlers : [routeHandlers];
+    for(let f of fn){
+      if(response.error)
+        break;
 
-        f(request, response);
-      }
-    }
-    else{
-      fn(request, response);
+      f(request, response);
     }
 
     if(response.error){
