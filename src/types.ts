@@ -2,7 +2,7 @@ export type PathParams = {[key:string]: string};
 export type HttpRequest = (GoogleAppsScript.Events.DoGet | GoogleAppsScript.Events.DoPost) 
   & { pathParams?: PathParams };
 export type HttpOutput = GoogleAppsScript.HTML.HtmlOutput | GoogleAppsScript.Content.TextOutput;
-export interface HttpResponse {
+export type HttpResponse = {
   result: HttpOutput | null;
   error?: string | null;
 }

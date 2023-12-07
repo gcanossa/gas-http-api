@@ -145,12 +145,12 @@ export const respond = (response: HttpResponse): HttpResponseHelper => {
     },
     json: (content:any) => {
       response.result = ContentService.createTextOutput()
-        .setMimeType(GoogleAppsScript.Content.MimeType.JSON)
+        .setMimeType(ContentService.MimeType.JSON)
         .setContent(JSON.stringify(content));
     },
     text: (content:string) => {
       response.result = ContentService.createTextOutput()
-        .setMimeType(GoogleAppsScript.Content.MimeType.TEXT)
+        .setMimeType(ContentService.MimeType.TEXT)
         .setContent(JSON.stringify(content));
     },
     download: (content:string, filename: string) => {

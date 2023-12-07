@@ -1,17 +1,17 @@
-import {describe, expect, jest, test} from '@jest/globals';
+import {describe, expect, test, vi} from 'vitest';
 import appBuilder from './app';
 
 describe("Middleware Chain", ()=>{
   test("All chain with error",()=>{
 
     const calls:any[] = [];
-    const mock1 = jest.fn((req, res)=>{
+    const mock1 = vi.fn((req, res)=>{
       calls.push(1);
     });
-    const mock2 = jest.fn((req, res)=>{
+    const mock2 = vi.fn((req, res)=>{
       calls.push(2);
     });
-    const mock3 = jest.fn((req, res)=>{
+    const mock3 = vi.fn((req, res)=>{
       calls.push(3);
     });
 
@@ -41,14 +41,14 @@ describe("Middleware Chain", ()=>{
   test("Chain stop at result",()=>{
 
     const calls:any[] = [];
-    const mock1 = jest.fn((req, res)=>{
+    const mock1 = vi.fn((req, res)=>{
       calls.push(1);
     });
-    const mock2 = jest.fn((req, res:any)=>{
+    const mock2 = vi.fn((req, res:any)=>{
       calls.push(2);
       res.result = "ok";
     });
-    const mock3 = jest.fn((req, res)=>{
+    const mock3 = vi.fn((req, res)=>{
       calls.push(3);
     });
 
@@ -80,16 +80,16 @@ describe("Matchers", ()=>{
   test("No match",()=>{
 
     const calls:any[] = [];
-    const mock1 = jest.fn((req, res)=>{
+    const mock1 = vi.fn((req, res)=>{
       calls.push(1);
     });
-    const mock2 = jest.fn((req, res:any)=>{
+    const mock2 = vi.fn((req, res:any)=>{
       calls.push(2);
     });
-    const mock3 = jest.fn((req, res)=>{
+    const mock3 = vi.fn((req, res)=>{
       calls.push(3);
     });
-    const match1 = jest.fn((req, res)=>{
+    const match1 = vi.fn((req, res)=>{
     });
 
     const app = appBuilder(p => {
@@ -119,16 +119,16 @@ describe("Matchers", ()=>{
   test("Match with params",()=>{
 
     const calls:any[] = [];
-    const mock1 = jest.fn((req, res)=>{
+    const mock1 = vi.fn((req, res)=>{
       calls.push(1);
     });
-    const mock2 = jest.fn((req, res:any)=>{
+    const mock2 = vi.fn((req, res:any)=>{
       calls.push(2);
     });
-    const mock3 = jest.fn((req, res)=>{
+    const mock3 = vi.fn((req, res)=>{
       calls.push(3);
     });
-    const match1 = jest.fn((req:any, res:any)=>{
+    const match1 = vi.fn((req:any, res:any)=>{
       expect(req.pathParams.value).toBe("info");
       res.result = 'ok';
     });
@@ -162,16 +162,16 @@ describe("Matchers", ()=>{
   test("Match with get",()=>{
 
     const calls:any[] = [];
-    const mock1 = jest.fn((req, res)=>{
+    const mock1 = vi.fn((req, res)=>{
       calls.push(1);
     });
-    const mock2 = jest.fn((req, res:any)=>{
+    const mock2 = vi.fn((req, res:any)=>{
       calls.push(2);
     });
-    const mock3 = jest.fn((req, res)=>{
+    const mock3 = vi.fn((req, res)=>{
       calls.push(3);
     });
-    const match1 = jest.fn((req:any, res:any)=>{
+    const match1 = vi.fn((req:any, res:any)=>{
       expect(req.pathParams.value).toBe("info");
       res.result = 'ok';
     });
