@@ -1,18 +1,15 @@
 import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
 export default defineConfig({
-  root: "./src",
+  plugins: [dts({ rollupTypes: true })],
   build: {
-    outDir: "../e2e",
-    assetsDir: "",
-    rollupOptions: {
-      input: "./src/main.e2e.ts",
-      output: {
-        entryFileNames: "code.js",
-      },
-      treeshake: false,
+    lib: {
+      entry: ["src/index.ts"],
+      formats: ["es"],
     },
-    minify: false,
-    target: "es2020",
+    rollupOptions: {
+      external: ["rollup"],
+    },
   },
 });
